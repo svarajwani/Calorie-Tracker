@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load static tailwind_tags %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        {% tailwind_css %}
+        <link rel="stylesheet" href="{% static 'css/output.css' %}" type="text/css">
+      </head>
+    <body>
+      <nav>
+        <ul class="flex p-4 justify-between items-center">
+            <li class="text-3xl font-bold">
+                Calorie Tracker
+            </li>
+            <li>
+                <a class="text-lg font-semibold py-2 px-3 hover:text-blue-500" href="/calorie_tracker/totals">Daily Totals</a>
+                <a class="text-lg font-semibold py-2 px-3 hover:text-blue-500" href="/calorie_tracker/">Search</a>
+            </li>
+        </ul>
+    </nav>
+      <div class="grid justify-items-center">
+        <div class="px-4 grid justify-items-center content-center w-2/3">
+          <form method="get" class="grid gap-4 pb-4">
+              {{ form.as_p }}
+              <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Search</button>
+          </form>
+          {% if  results %}
+            <ul class="grid justify-items-start gap-2">
+              {% for result in results %}
+                  <li onclick="location.href='food/{{result.food_id}}/'" class="w-full cursor-pointer p-2 border-2 border-solid border-black-500 rounded-md hover:border-blue-500"><div class="font-semibold">{{result.food_name}}</div>{{ result.food_description }}</li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p>No results found. Try another search term.</p>
+          {% endif %}
+        </div>
+      </div>
+    </body>
+</html>

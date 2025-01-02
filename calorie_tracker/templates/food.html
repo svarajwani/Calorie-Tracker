@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+{% load static tailwind_tags %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        {% tailwind_css %}
+        <link rel="stylesheet" href="{% static 'css/output.css' %}" type="text/css">
+    </head>
+    <body>
+        <nav>
+            <ul class="flex p-4 justify-between items-center">
+                <li class="text-3xl font-bold">
+                    Calorie Tracker
+                </li>
+                <li>
+                    <a class="text-lg font-semibold py-2 px-3 hover:text-blue-500" href="/calorie_tracker/totals">Daily Totals</a>
+                    <a class="text-lg font-semibold py-2 px-3 hover:text-blue-500" href="/calorie_tracker/">Search</a>
+                </li>
+            </ul>
+        </nav>
+        <div class="grid justify-items-center">
+            <div class="grid gap-2">
+                <h1 class="text-3xl font-bold">{{ food_name }}</h1>
+                <div class="grid grid-cols-4 items-center gap-2 py-4">
+                    <div class="col-span-4 justify-self-center text-lg text-blue-700 font-semibold">Per Serving ({{ serving_size }} {{ serving_units }})</div>
+                    <div class="justify-self-center font-semibold">Calories</div>
+                    <div class="justify-self-center font-semibold">Protein (g)</div>
+                    <div class="justify-self-center font-semibold">Carbs (g)</div>
+                    <div class="justify-self-center font-semibold">Fat (g)</div>
+                    <div class="justify-self-center">{{ food_calories }}</div>
+                    <div class="justify-self-center">{{ protein }}</div>
+                    <div class="justify-self-center">{{ carbs }}</div>
+                    <div class="justify-self-center">{{ fat }}</div>
+                </div>
+                <form method="post" class="grid gap-4 pb-4">
+                    {% csrf_token %}
+                    <!-- Number of Servings Field -->
+                    <div class="flex gap-2 items-center">
+                        <label for="{{ form.numberOfServings.id_for_label }}" class="font-semibold">
+                            {{ form.numberOfServings.label }}
+                        </label>
+                        {{ form.numberOfServings }}
+                    </div>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Add Food to Daily Totals
+                    </button>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

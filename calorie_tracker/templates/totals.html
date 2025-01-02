@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+{% load custom_filters %}
+{% load static tailwind_tags %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        {% tailwind_css %}
+        <link rel="stylesheet" href="{% static 'css/output.css' %}" type="text/css">
+</head>
+<body class="font-sans">
+    <nav>
+        <ul class="flex p-4 justify-between items-center">
+            <li class="text-3xl font-bold">
+                Calorie Tracker
+            </li>
+            <li>
+                <a class="text-lg font-semibold py-2 px-3 hover:text-blue-500" href="/calorie_tracker/totals">Daily Totals</a>
+                <a class="text-lg font-semibold py-2 px-3 hover:text-blue-500" href="/calorie_tracker/">Search</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="grid justify-center">
+        <table class="table-auto">
+            <thead>
+              <tr>
+                <th class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-black dark:text-slate-200 text-left">Food</th>
+                <th class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-black dark:text-slate-200 text-left">Servings</th>
+                <th class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-black dark:text-slate-200 text-left">Calories (kCal)</th>
+                <th class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-black dark:text-slate-200 text-left">Protein (g)</th>
+                <th class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-black dark:text-slate-200 text-left">Carbs (g)</th>
+                <th class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-black dark:text-slate-200 text-left">Fat (g)</th>
+                <th class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-black dark:text-slate-200 text-left"></th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for item in cart %}
+                <tr>
+                    <form action="{% url 'delete' item.id %}" method="POST" class="grid grid-cols-2 gap-4 items-center">
+                        {% csrf_token %}
+        
+                        <td class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">{{ item.name }}</td>
+                        <td class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">{{ item.numberOfServings|round_number}}</td>
+                        <td class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">{{ item.calories|multiply:item.numberOfServings|round_number}}</td>
+                        <td class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">{{ item.protein|multiply:item.numberOfServings|round_number}}</td>
+                        <td class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">{{ item.carbs|multiply:item.numberOfServings|round_number}}</td>
+                        <td class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">{{ item.fat|multiply:item.numberOfServings|round_number}}</td>
+                        <td class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
+                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
+                                Delete
+                            </button>
+                        </td>
+                    </form>
+                </tr>
+            {% endfor %}
+            </tbody>
+            <tfoot>
+                <td class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-black dark:text-slate-400"></td>
+                        <td class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-black font-semibold dark:text-slate-400">Totals</td>
+                        <td class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-black font-semibold dark:text-slate-400">{{ totalCalories }}</td>
+                        <td class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-black font-semibold dark:text-slate-400">{{ totalProtein }}</td>
+                        <td class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-black font-semibold dark:text-slate-400">{{ totalCarbs }}</td>
+                        <td class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-black font-semibold dark:text-slate-400">{{ totalFat }}</td>
+            </tfoot>
+          </table>
+    </div>
+      
+</body>
+</html>
