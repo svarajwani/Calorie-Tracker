@@ -5,19 +5,19 @@ from django.core.cache import cache
 from fatsecret import Fatsecret
 import requests
 
-
+import os
+from dotenv import load_dotenv
 from .forms import FoodSearchForm, NumberOfServingsForm
 from .models import FoodItem
 
-consumer_key =  "02d2b47e52014d1f8e5db815be740d43"
-consumer_secret = "252b5f1c78904660b505fa03ae487b60"
+load_dotenv()
+
+consumer_key = os.getenv("API_KEY")
+consumer_secret = os.getenv("FATSECRET_KEY")
 fs = Fatsecret(consumer_key, consumer_secret)
 
-def test_keys():
-    print(f"API_KEY: {settings.API_KEY}")
-    print(f"FATSECRET_KEY: {settings.FATSECRET_KEY}")
-
 # Create your views here.
+
 
 def index(request):
 
